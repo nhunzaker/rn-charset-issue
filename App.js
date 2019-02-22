@@ -20,7 +20,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   sendJson() {
-    let body = JSON.stringify({ key: "value" });
+    let body = JSON.stringify({ key: "Friðjónsson" });
 
     let headers = {
       "Content-Type": "application/json"
@@ -29,9 +29,19 @@ export default class App extends Component<Props> {
     fetch("http://10.0.2.2:3000", { method: "POST", body, headers });
   }
 
+  sendJsonUtf16() {
+    let body = JSON.stringify({ key: "Friðjónsson" });
+
+    let headers = {
+      "Content-Type": "application/json; charset=utf-16"
+    };
+
+    fetch("http://10.0.2.2:3000", { method: "POST", body, headers });
+  }
+
   sendForm() {
     let body = new FormData();
-    body.append("key", "value");
+    body.append("key", "Friðjónsson");
 
     fetch("http://10.0.2.2:3000", { method: "POST", body });
   }
@@ -40,7 +50,10 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <Button onPress={this.sendJson} title="Send JSON" />
+          <Button onPress={this.sendJson} title="Send JSON UTF-8" />
+        </View>
+        <View style={styles.row}>
+          <Button onPress={this.sendJsonUtf16} title="Send JSON UTF-16" />
         </View>
         <View style={styles.row}>
           <Button onPress={this.sendForm} title="Send Form" />

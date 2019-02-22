@@ -1,19 +1,32 @@
-// content of index.js
-const http = require("http");
+var express = require("express");
+var bodyParser = require("body-parser");
 
-const requestHandler = (request, response) => {
-  console.log("\n%s - %s:", request.method, new Date().toLocaleTimeString());
+var app = express();
+
+// create application/json parser
+var jsonParser = bodyParser.json();
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.use(jsonParser);
+app.use(urlencodedParser);
+
+// POST /login gets urlencoded bodies
+app.post("/", function(request, response) {
+  console.log("POST - %s", new Date().toLocaleTimeString());
 
   for (let key in request.headers) {
     console.log("  %s: %s", key, request.headers[key]);
   }
 
-  response.end(JSON.stringify({ message: "You did it!" }));
-};
+  console.log("\nBody:");
+  console.log("  ", request.body);
 
-const server = http.createServer(requestHandler);
+  response.json({ message: "You did it!" });
+});
 
-server.listen(3000, err => {
+app.listen(3000, err => {
   if (err) {
     return console.log("something bad happened", err);
   }
